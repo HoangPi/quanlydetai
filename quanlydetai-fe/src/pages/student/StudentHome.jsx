@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Box, Typography, TextField, Grid } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  TextField,
+  Grid,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import MainLayout from "../../components/layout/MainLayout";
 import Timeline from "@mui/lab/Timeline";
 import TimelineItem from "@mui/lab/TimelineItem";
@@ -17,9 +25,60 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { findUser } from "../../utils/api/user";
 import { findTopicOfStudent } from "../../utils/api/topic";
 
+function Notification({ open, message, type, handleClose }) {
+  
+  return (
+    <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity={type}>
+        {message}
+      </Alert>
+    </Snackbar>
+  );
+}
+
 function StudentHome() {
   const [currentUser, setCurrentUser] = useState({});
   const [currentTopic, setCurrentTopic] = useState({});
+  const [notification, setNotification] = useState({
+    open: false,
+    message: "",
+    type: "",
+  });
+
+  const showNotification = (message, type) => {
+    setNotification({ open: true, message, type });
+
+    // Clear the notification after a few seconds
+    setTimeout(() => {
+      setNotification({ open: false, message: "", type: "" });
+    }, 3000);
+  };
+
+  const handleCloseNotification = () => {
+    setNotification({ open: false, message: "", type: "" });
+  };
+
+  const handleUpdateClick = () => {
+    try {
+      // Add your logic for updating data here
+
+      // For example, you might simulate a successful update
+      // Replace the following line with your actual update logic
+      // await updateData(updatedData);
+
+      // Show success notification
+      showNotification("Cập nhật thành công", "success");
+
+      // You may also want to reload data after a successful update
+      // Uncomment the following line if needed
+      // await getCurrentTopic();
+    } catch (error) {
+      console.error("Error updating data:", error);
+
+      // Show error notification
+      showNotification("Cập nhật thất bại", "error");
+    }
+  };
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -113,7 +172,11 @@ function StudentHome() {
                             justifyContent={"center"}
                             mt={2}
                           >
-                            <Button variant="contained" size="small">
+                            <Button
+                              variant="contained"
+                              size="small"
+                              onClick={handleUpdateClick}
+                            >
                               Cập nhật
                             </Button>
                           </Box>
@@ -262,6 +325,13 @@ function StudentHome() {
           </Box>
         )}
       </Box>
+      {/* Notification Component */}
+      <Notification
+        open={notification.open}
+        message={notification.message}
+        type={notification.type}
+        handleClose={handleCloseNotification}
+      />
     </MainLayout>
   );
 }

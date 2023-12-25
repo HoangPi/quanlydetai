@@ -8,33 +8,34 @@ const rows = [
     id: 1,
     title: "Thông báo tuyển sinh",
     date: "05/09/2023",
+    pdfFile: "Tuyensinh.pdf",
   },
   {
     id: 2,
     title: "Thông báo đăng kí đề tài",
     date: "13/11/2023",
+    pdfFile: "DKDT.pdf",
   },
 ];
 
 const columns = [
-  {
-    field: "id",
-    headerName: "STT",
-    width: 50,
-    valueGetter: (params) => {
-      return params.value;
-    },
-  },
+  { field: "id", headerName: "STT", width: 50 },
   { field: "title", headerName: "Tiêu đề", width: 300 },
   { field: "date", headerName: "Ngày đăng", width: 200 },
   {
-    field: "",
+    field: "action",
     headerName: "Hành động",
     width: 200,
     renderCell: (params) => {
+      const { pdfFile } = params.row;
+      const handleOpenPdf = () => {
+        const pdfUrl = process.env.PUBLIC_URL + `/${pdfFile}`;
+        window.open(pdfUrl, "_blank");
+      };
+
       return (
         <Box display={"flex"} gap={2} alignItems={"center"}>
-          <Button variant="contained" size="small">
+          <Button variant="contained" size="small" onClick={handleOpenPdf}>
             Chi tiết
           </Button>
         </Box>

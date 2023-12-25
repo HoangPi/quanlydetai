@@ -101,7 +101,9 @@ export const listStudentSideBar = [
 ];
 
 export const listGuestSideBar = [
-  { name: "Trang chủ", icon: <HomeOutlinedIcon />, href: "/" },
+  { name: "Trang chủ", 
+    icon: <HomeOutlinedIcon />,
+    href: "/" },
   {
     name: "Xem hướng dẫn",
     icon: <LogoutOutlinedIcon />,
