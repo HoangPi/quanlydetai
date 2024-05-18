@@ -51,8 +51,8 @@ module.exports = {
       let { ...body } = req.body;
       let user = await userModel
         .findOne({
-          username: body.username,
-          password: body.password,
+          username: body.username.toString(),
+          password: body.password.toString()
         })
         .populate("major")
         .select("-password");
@@ -135,7 +135,10 @@ module.exports = {
       }
 
       await userModel.findByIdAndUpdate(req.params.id, {
-        ...req.body,
+        name: req.body.name.toString(),
+        birth: req.body.birth.toString(),
+        phone: req.body.phone.toString(),
+        address: req.body.address.toString(),
       });
 
       const user = await userModel
@@ -144,6 +147,7 @@ module.exports = {
         .select("-password");
       res.status(201).json(user);
     } catch (error) {
+      console.log(error)
       throw error;
     }
   },
